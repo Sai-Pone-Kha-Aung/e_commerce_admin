@@ -1,0 +1,15 @@
+model Billboard{
+  id        String   @id @default(uuid())
+  storeId   String   @id @default(auto)
+  store     Store    @relation("StoreToBillboard", fields: [storeId], references: [id])
+  label     String
+  imageUrl  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([storeId])
+}
+
+user_2fBYzq9YKoJHStYaUqYBOObx8Dd
+user_2fBYzq9YKoJHStYaUqYBOObx8Dd
+user_2fBmrDhgREf2R6XwiXsfgZ8kyaQ
