@@ -1,7 +1,7 @@
 "use client"
 
 import { DropdownMenu, DropdownMenuTrigger,DropdownMenuContent, DropdownMenuLabel, DropdownMenuItem } from "@/components/ui/dropdown-menu"
-import { ColorColumn } from "./columns"
+import { ProductColumn } from "./columns"
 import { Button } from "@/components/ui/button"
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react"
 import toast from "react-hot-toast"
@@ -11,7 +11,7 @@ import axios from "axios"
 import { AlertModal } from "@/components/modals/alert-modal"
 
 interface CellActionProps {
-    data: ColorColumn
+    data: ProductColumn
 }
 export const CellAction: React.FC<CellActionProps> = ({data}) => {
 
@@ -29,11 +29,11 @@ export const CellAction: React.FC<CellActionProps> = ({data}) => {
     const onDelete = async () => {
         try{
             setLoading(true);
-            await axios.delete(`/api/${params.storeId}/colors/${data.id}`);
+            await axios.delete(`/api/${params.storeId}/products/${data.id}`);
             router.refresh();
-            toast.success("Color deleted.");
+            toast.success("Product deleted.");
         } catch (error){
-            toast.error("Make sure you removed all categories using this billboard first");
+            toast.error("Something went wrong");
         } finally {
             setLoading(false);
             setOpen(false);
@@ -63,7 +63,7 @@ export const CellAction: React.FC<CellActionProps> = ({data}) => {
                     <Copy className="w-4 h-4 mr-2"/>
                     Copy Id
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/colors/${data.id}`)}>
+                <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/products/${data.id}`)}>
                     <Edit className="w-4 h-4 mr-2"/>
                     Update
                 </DropdownMenuItem>
