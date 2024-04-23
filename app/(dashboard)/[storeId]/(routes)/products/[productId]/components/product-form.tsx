@@ -62,7 +62,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         defaultValues: initialData ? {
             ...initialData,
             price: parseFloat(String(initialData?.price)),
-            images: initialData.images.map(image => ({ url: image.id }))
         } : {
             name: ' ',
             images: [],
