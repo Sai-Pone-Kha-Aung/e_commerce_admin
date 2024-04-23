@@ -2,7 +2,7 @@
 
 import * as z from 'zod';
 import axios from 'axios';
-import { Size } from '@prisma/client'
+import { Color } from '@prisma/client'
 import { Heading } from '@/components/organisms/header/header';
 import { Button } from '@/components/ui/button';
 import { Trash } from 'lucide-react';
@@ -17,8 +17,8 @@ import { useParams, useRouter } from 'next/navigation';
 import { AlertModal } from '@/components/modals/alert-modal';
 
 
-interface SizeFormProps {
-    initialData: Size | null ;
+interface ColorFormProps {
+    initialData: Color | null ;
 }
 
 const formSchema = z.object({
@@ -26,21 +26,21 @@ const formSchema = z.object({
     value: z.string().min(1), 
 });
 
-type SizeFormValues = z.infer<typeof formSchema>;
+type ColorFormValues = z.infer<typeof formSchema>;
 
-export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
+export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
     
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const params = useParams();
     const router = useRouter();
 
-    const title = initialData ? "Edit size" : "Create size";
-    const description = initialData ? "Edit a size" : "Add new size";
-    const toastMessage = initialData ? "Size updated." : "Size created.";
+    const title = initialData ? "Edit color" : "Create color";
+    const description = initialData ? "Edit a color" : "Add new color";
+    const toastMessage = initialData ? "Color updated." : "Size created.";
     const action = initialData ? "Save change" : "Create";
 
-    const form = useForm<SizeFormValues>({
+    const form = useForm<ColorFormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: initialData || {
             name: ' ',
@@ -48,16 +48,17 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
         }
     })
 
-    const onSubmit = async (data: SizeFormValues) => {
+    const onSubmit = async (data: ColorFormValues) => {
         try{
             setLoading(true);
             if(initialData) {
-                await axios.patch(`/api/${params.storeId}/sizes/${params.sizesId}`, data);
+                await axios.patch(`/api/${params.storeId}/colors/${params.colorId}`, data);
             } else {
-                await axios.post(`/api/${params.storeId}/sizes`, data);
+                await axios.post(`/api/${params.storeId}/colors`, data);
             }
             
-            router.push(`/${params.storeId}/sizes`);
+            
+            router.push(`/${params.storeId}/colors`);
             router.refresh();
             toast.success(toastMessage);
         } catch (error){
@@ -71,9 +72,9 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
         try{
             setLoading(true);
             await axios.delete(`/api/${params.storeId}/sizes/${params.sizeId}`);
-            router.push(`/${params.storeId}/sizes`);
             router.refresh();
-            toast.success("Size deleted.");
+            router.push(`/${params.storeId}/sizes`);
+            toast.success("Billboard deleted.");
         } catch (error){
             toast.error("Make sure you removed all categories using this billboard first");
         } finally {
@@ -117,9 +118,9 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Size</FormLabel>
+                                        <FormLabel>Name</FormLabel>
                                         <FormControl>
-                                            <Input disabled={loading} placeholder="Size name..." {...field}/>
+                                            <Input disabled={loading} placeholder="Color name..." {...field}/>
                                         </FormControl>
                                         <FormMessage/>
                                     </FormItem>
@@ -132,7 +133,14 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
                                     <FormItem>
                                         <FormLabel>Value</FormLabel>
                                         <FormControl>
-                                            <Input disabled={loading} placeholder="Size value..." {...field}/>
+                                            <div className='flex items-center gap-x-4'>
+
+                                            <Input disabled={loading} placeholder="Color value..." {...field}/>
+                                            <div className='border p-4 rounded-full'
+                                            style={{backgroundColor: field.value}}>
+
+                                            </div>
+                                            </div>
                                         </FormControl>
                                         <FormMessage/>
                                     </FormItem>
