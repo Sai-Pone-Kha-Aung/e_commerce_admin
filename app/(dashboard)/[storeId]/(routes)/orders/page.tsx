@@ -1,6 +1,6 @@
 import prismadb from "@/lib/prismadb";
 
-import { SizesClient } from "./components/client";
+import { OrderClient } from "./components/client";
 import { OrderColumn } from "./components/columns";
 import {format} from "date-fns";
 import { formatter } from "@/lib/utils";
@@ -31,7 +31,7 @@ const OrderPage = async ({
         id: item.id,
         phone: item.phone,
         address:item.address,
-        product: item.orderItems.map((item) => item.product.name).join(", "),
+        products: item.orderItems.map((item) => item.product.name).join(", "),
         totalPrice: formatter.format(item.orderItems.reduce((total,item) => {
             return total + Number(item.product.price)
         }, 0)),
@@ -43,7 +43,7 @@ const OrderPage = async ({
     return (
         <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
-                <SizesClient data={formattedOrder}/>
+                <OrderClient data={formattedOrder}/>
             </div>
         </div>
     )
