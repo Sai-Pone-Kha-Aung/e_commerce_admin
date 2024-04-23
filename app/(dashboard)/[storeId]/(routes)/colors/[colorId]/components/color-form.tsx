@@ -37,7 +37,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
 
     const title = initialData ? "Edit color" : "Create color";
     const description = initialData ? "Edit a color" : "Add new color";
-    const toastMessage = initialData ? "Color updated." : "Size created.";
+    const toastMessage = initialData ? "Color updated." : "Color created.";
     const action = initialData ? "Save change" : "Create";
 
     const form = useForm<ColorFormValues>({
@@ -71,10 +71,10 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
     const onDelete = async () => {
         try{
             setLoading(true);
-            await axios.delete(`/api/${params.storeId}/sizes/${params.sizeId}`);
+            await axios.delete(`/api/${params.storeId}/colors/${params.colorId}`);
+            router.push(`/${params.storeId}/colors`);
             router.refresh();
-            router.push(`/${params.storeId}/sizes`);
-            toast.success("Billboard deleted.");
+            toast.success("Color deleted.");
         } catch (error){
             toast.error("Make sure you removed all categories using this billboard first");
         } finally {
